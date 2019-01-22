@@ -24,6 +24,10 @@ public class BootstrapData  implements ApplicationListener<ContextRefreshedEvent
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        rebuildDatabase();
+    }
+
+    private void rebuildDatabase() {
         productsRepository.deleteAll();
         log.info("Deleted all products");
 
