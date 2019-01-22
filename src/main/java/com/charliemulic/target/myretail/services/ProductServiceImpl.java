@@ -4,8 +4,6 @@ import com.charliemulic.target.myretail.model.Product;
 import com.charliemulic.target.myretail.repositories.ProductsRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -16,7 +14,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getProductById(Long id) {
-        return productsRepository.findById(id);
+    public Product getProductById(Long id) {
+        return productsRepository.findById(id).orElse(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.charliemulic.target.myretail.controllers;
 
+import com.charliemulic.target.myretail.errors.EntityNotFoundException;
 import com.charliemulic.target.myretail.model.Product;
 import com.charliemulic.target.myretail.services.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,10 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id).orElse(new Product());
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            throw new EntityNotFoundException();
+        }
+        return product;
     }
 }

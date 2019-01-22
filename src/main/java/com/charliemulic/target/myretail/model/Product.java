@@ -8,6 +8,8 @@ public class Product {
 
     @Id
     private Long id;
+    private String name;
+    private ProductPrice currentPrince;
 
     public Long getId() {
         return id;
@@ -15,5 +17,21 @@ public class Product {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ProductPrice getCurrentPrince() {
+        return currentPrince;
+    }
+
+    public void setCurrentPrince(ProductPrice currentPrince) {
+        this.currentPrince = currentPrince;
     }
 }
