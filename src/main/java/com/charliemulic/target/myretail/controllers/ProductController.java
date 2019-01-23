@@ -16,10 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-// TODO tests
-// TODO how would this scale?
-// TODO put on non existing id?
-
 @RestController
 public class ProductController {
 
