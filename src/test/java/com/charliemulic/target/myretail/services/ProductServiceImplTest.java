@@ -24,7 +24,8 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 public class ProductServiceImplTest {
 
@@ -69,6 +70,7 @@ public class ProductServiceImplTest {
         assertEquals("1", product.getId());
         assertEquals("Test Product", product.getName());
         assertNotNull(product.getCurrentPrice());
+        verify(repository, times(1)).findById("1");
     }
 
     @Test
@@ -78,6 +80,7 @@ public class ProductServiceImplTest {
         // when
         when(repository.findById("1")).thenReturn(Optional.ofNullable(null));
         Product product = service.getProductById("1");
+        verify(repository, times(1)).findById("1");
     }
 
     @Test
@@ -93,16 +96,20 @@ public class ProductServiceImplTest {
 
         assertNotNull(savedProductCommand);
         assertEquals(PRODUCT_ID, savedProductCommand.getId());
+        verify(repository, times(1)).save(any());
+        verify(productCommandToProduct, times(1)).convert(any());
+        verify(productToProductCommand, times(1)).convert(any());
     }
 
     @Test
     public void getProductNameTest() {
         Tcin testTcin = createTestTcin();
-//        when(restTemplate.getForObject(any(), any())).thenReturn(testTcin);
         when(restTemplate.getForObject(ENDPOINT_URL, Tcin.class)).thenReturn(testTcin);
 
         String name = service.getProductName("1").join();
+
         assertEquals("Test Name", name);
+        verify(restTemplate, times(1)).getForObject(ENDPOINT_URL, Tcin.class);
     }
 
     @Test
@@ -117,7 +124,9 @@ public class ProductServiceImplTest {
         when(productToProductCommand.convert(any())).thenReturn(productCommand);
 
         Boolean result = service.copyProductDetailsForId("1").join();
+
         assertEquals(true, result);
+        verify(restTemplate, times(1)).getForObject(ENDPOINT_URL, Tcin.class);
     }
 
     @Test
@@ -127,6 +136,7 @@ public class ProductServiceImplTest {
 
         Boolean result = service.copyProductDetailsForId("1").join();
         assertEquals(false, result);
+        verify(restTemplate, times(1)).getForObject(ENDPOINT_URL, Tcin.class);
     }
 
     @Test
