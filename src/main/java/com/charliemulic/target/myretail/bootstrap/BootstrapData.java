@@ -45,7 +45,7 @@ public class BootstrapData  implements ApplicationListener<ContextRefreshedEvent
         cp.setCurrencyCode("USD");
         cp.setValue(price);
 
-        p.setCurrentPrince(cp);
+        p.setCurrentPrice(cp);
         productsRepository.save(p);
         log.info(String.format("Saved product: %s", name));
     }

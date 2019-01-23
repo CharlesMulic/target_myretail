@@ -1,15 +1,11 @@
-package com.charliemulic.target.myretail.model;
+package com.charliemulic.target.myretail.commands;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
-public class Product {
+public class ProductCommand {
 
-    @Id
     private Long id;
     private String name;
-    private ProductPrice currentPrice;
+    private ProductPriceCommand currentPrice;
 
     public Long getId() {
         return id;
@@ -27,11 +23,11 @@ public class Product {
         this.name = name;
     }
 
-    public ProductPrice getCurrentPrice() {
+    public ProductPriceCommand getCurrentPrice() {
         return currentPrice;
     }
 
-    public void setCurrentPrice(ProductPrice currentPrice) {
+    public void setCurrentPrice(ProductPriceCommand currentPrice) {
         this.currentPrice = currentPrice;
     }
 }

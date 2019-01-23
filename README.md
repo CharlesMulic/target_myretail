@@ -1,5 +1,51 @@
 [![CircleCI](https://circleci.com/gh/CharlesMulic/target_myretail.svg?style=svg)](https://circleci.com/gh/CharlesMulic/target_myretail)
 
+<h3>Endpoints</h3>
+- GET /products/{id}
+<p>Provides information for a specific product with the provided id</p>
+
+```json
+Example Request: GET http://localhost:8080/products/13860428/
+{
+  "id":13860428,
+  "name":"The Big Lebowski (Blu-ray) (Widescreen)",
+  "current_price": {
+    "value": 13.49,
+    "currency_code":"USD"
+  }
+}
+```
+
+- PUT /products/{id}
+<p>Attempts to update the product with the provided id with the JSON data in the request body. If valid, you should be redirected to GET products/{id}, if invalid, you should receive a response describing the problem.</p>
+
+```json
+Example Request: PUT http://localhost:8080/products/13860428/
+Body:
+{
+  "id":13860428,
+  "name":"Edited Name",
+  "current_price": {
+    "value": 13.49,
+    "currency_code":"USD"
+  }
+}
+```
+
+- /products/{id}/name
+
+This endpoint uses a rest client to hit a third party API that will provide the name of the product with this id. Additionally, it will asynchronously fetch pricing information from a local database, and return the aggregated results as JSON.
+
+```json
+Example Request: GET http://localhost:8080/products/13860428/name
+{
+"price": 10.5,
+"name": "The Big Lebowski (Blu-ray)",
+"id": 13860428
+}
+```
+
+
 myRetail is a rapidly growing company with HQ in Richmond, VA and over 200 stores across the east coast. myRetail wants to make its internal data available to any number of client devices, from myRetail.com to native mobile apps. 
 The goal for this exercise is to create an end-to-end Proof-of-Concept for a products API, which will aggregate product data from multiple sources and return it as JSON to the caller. 
 Your goal is to create a RESTful service that can retrieve product and price details by ID. The URL structure is up to you to define, but try to follow some sort of logical convention.
