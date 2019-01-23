@@ -61,7 +61,7 @@ Body:
 }
 ```
 
-- /products/{id}/name
+- GET /products/{id}/name
 
 This endpoint uses a rest client to hit a third party API that will provide the name of the product with this id. Additionally, it will asynchronously fetch pricing information from a local database, and return the aggregated results as JSON.
 
@@ -74,7 +74,7 @@ Example Request: GET http://localhost:8080/products/13860428/name
 }
 ```
 
-- /products/{id}/copy
+- GET /products/{id}/copy
 
 This endpoint fetches the product with the given id from a third party and copies it to the local application database. This is a utility endpoint intended to populate demo data.
 
