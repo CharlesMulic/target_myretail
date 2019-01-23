@@ -1,5 +1,12 @@
 [![CircleCI](https://circleci.com/gh/CharlesMulic/target_myretail.svg?style=svg)](https://circleci.com/gh/CharlesMulic/target_myretail)
 
+CircleCI build: https://circleci.com/gh/CharlesMulic/target_myretail
+
+This is a Spring Boot MVC application exposing several RESTful endpoints described below. The application is currently configured to run with an embedded MongoDB database, but can be easily changed to a remote host.
+
+You can run the application from command line with: mvn spring-boot:run
+Alternatively, run via an IDE by creating a run configuration for the main class com.charliemulic.target.myretail.MyretailApplication
+
 <h3>Endpoints</h3>
 
 - GET /api/v1/products
