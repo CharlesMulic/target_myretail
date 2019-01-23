@@ -92,8 +92,8 @@ public class ProductControllerTest {
         mockMvc.perform(put(String.format("/api/v1/products/%s", PRODUCT_ID))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":\"1\",\"name\":\"Test Product\",\"currentPrice\":{\"value\":1.23,\"currencyCode\":\"USD\"}}"))
-//                .andExpect(redirectedUrl(String.format("/products/%s", unsavedCommand.getId()))) // is null?
-                .andExpect(status().isOk());
+                .andExpect(redirectedUrl(String.format("/api/v1/products/%s", unsavedCommand.getId()))) // is null?
+                .andExpect(status().is(302));
     }
 
     @Test
