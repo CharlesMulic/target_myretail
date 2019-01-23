@@ -1,7 +1,35 @@
 [![CircleCI](https://circleci.com/gh/CharlesMulic/target_myretail.svg?style=svg)](https://circleci.com/gh/CharlesMulic/target_myretail)
 
 <h3>Endpoints</h3>
+
+- GET /products
+
+<p>Returns a list of all products in the database</p>
+
+```json
+Example Request: GET http://localhost:8080/products
+[
+  {
+    "id": "13860424",
+    "name": "Moment of truth (Blu-ray)",
+    "currentPrice": {
+      "value": 19.69,
+      "currencyCode": "USD"
+    }
+  },
+  {
+    "id": "13860429",
+    "name": "SpongeBob SquarePants: SpongeBob's Frozen Face-off",
+    "currentPrice": {
+      "value": 7.5,
+      "currencyCode": "USD"
+    }
+  }
+]
+```
+
 - GET /products/{id}
+
 <p>Provides information for a specific product with the provided id</p>
 
 ```json
@@ -17,6 +45,7 @@ Example Request: GET http://localhost:8080/products/13860428/
 ```
 
 - PUT /products/{id}
+
 <p>Attempts to update the product with the provided id with the JSON data in the request body. If valid, you should be redirected to GET products/{id}, if invalid, you should receive a response describing the problem.</p>
 
 ```json
@@ -45,18 +74,11 @@ Example Request: GET http://localhost:8080/products/13860428/name
 }
 ```
 
+- /products/{id}/copy
 
-myRetail is a rapidly growing company with HQ in Richmond, VA and over 200 stores across the east coast. myRetail wants to make its internal data available to any number of client devices, from myRetail.com to native mobile apps. 
-The goal for this exercise is to create an end-to-end Proof-of-Concept for a products API, which will aggregate product data from multiple sources and return it as JSON to the caller. 
-Your goal is to create a RESTful service that can retrieve product and price details by ID. The URL structure is up to you to define, but try to follow some sort of logical convention.
+This endpoint fetches the product with the given id from a third party and copies it to the local application database. This is a utility endpoint intended to populate demo data.
 
-Build an application that performs the following actions: 
-* Responds to an HTTP GET request at /products/{id} and delivers product data as JSON (where {id} will be a number. 
-* Example product IDs: 15117729, 16483589, 16696652, 16752456, 15643793) 
-* Example response: {"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value": 13.49,"currency_code":"USD"}}
-* Performs an HTTP GET to retrieve the product name from an external API. (For this exercise the data will come from redsky.target.com, but let’s just pretend this is an internal resource hosted by myRetail)  
-* Example: http://redsky.target.com/v2/pdp/tcin/13860428?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics
-* Reads pricing information from a NoSQL data store and combines it with the product id and name from the HTTP request into a single response.  
-* BONUS: Accepts an HTTP PUT request at the same path (/products/{id}), containing a JSON request body similar to the GET response, and updates the product’s price in the data store.
-
-Using https://cloud.mongodb.com for database hosting. 
+```json
+Example Request: GET http://localhost:8080/products/13860424/copy
+Example Response: Data Copied Successfully
+```

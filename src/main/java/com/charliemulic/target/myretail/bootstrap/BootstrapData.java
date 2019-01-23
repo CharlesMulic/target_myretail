@@ -1,25 +1,25 @@
 package com.charliemulic.target.myretail.bootstrap;
 
-import com.charliemulic.target.myretail.model.Product;
-import com.charliemulic.target.myretail.model.ProductPrice;
 import com.charliemulic.target.myretail.repositories.ProductsRepository;
+import com.charliemulic.target.myretail.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import java.util.concurrent.CompletableFuture;
 
 @Component
-public class BootstrapData  implements ApplicationListener<ContextRefreshedEvent> {
+public class BootstrapData implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(BootstrapData.class);
 
-    private static Long productCounter = 1L;
-
     private final ProductsRepository productsRepository;
+    private final ProductService productService;
 
-    public BootstrapData(ProductsRepository productsRepository) {
+    public BootstrapData(ProductsRepository productsRepository, ProductService productService) {
         this.productsRepository = productsRepository;
+        this.productService = productService;
     }
 
     @Override
@@ -31,22 +31,16 @@ public class BootstrapData  implements ApplicationListener<ContextRefreshedEvent
         productsRepository.deleteAll();
         log.info("Deleted all products");
 
-        createProduct("Test Product 1", 1.23);
-        createProduct("Test Product 2", 2.34);
-        createProduct("Test Product 3", 3.45);
+        CompletableFuture[] futures = new CompletableFuture[]{
+                productService.copyProductDetailsForId("13860420"),
+                productService.copyProductDetailsForId("13860421"),
+                productService.copyProductDetailsForId("13860424"),
+                productService.copyProductDetailsForId("13860425"),
+                productService.copyProductDetailsForId("13860428"),
+                productService.copyProductDetailsForId("13860429")
+        };
+
+        CompletableFuture.allOf(futures).join();
     }
 
-    private void createProduct(String name, Double price) {
-        Product p = new Product();
-        p.setId(productCounter++);
-        p.setName(name);
-
-        ProductPrice cp = new ProductPrice();
-        cp.setCurrencyCode("USD");
-        cp.setValue(price);
-
-        p.setCurrentPrice(cp);
-        productsRepository.save(p);
-        log.info(String.format("Saved product: %s", name));
-    }
 }

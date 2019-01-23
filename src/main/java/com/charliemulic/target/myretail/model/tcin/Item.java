@@ -7,6 +7,9 @@ public class Item {
     @JsonProperty("product_description")
     private ProductDescription productDescription;
 
+    @JsonProperty("tcin")
+    private String tcin;
+
     public Item() {}
 
     public ProductDescription getProductDescription() {
@@ -15,5 +18,13 @@ public class Item {
 
     public void setProductDescription(ProductDescription productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public String getTcin() {
+        return tcin;
+    }
+
+    public void setTcin(String tcin) {
+        this.tcin = tcin;
     }
 }

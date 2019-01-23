@@ -1,17 +1,24 @@
 package com.charliemulic.target.myretail.commands;
 
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 public class ProductCommand {
 
-    private Long id;
+    private String id;
+
+    @NotNull
     private String name;
+
+    @Valid
     private ProductPriceCommand currentPrice;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
