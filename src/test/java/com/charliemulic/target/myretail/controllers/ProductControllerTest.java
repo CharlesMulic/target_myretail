@@ -54,7 +54,7 @@ public class ProductControllerTest {
         when(service.getAllProducts()).thenReturn(Lists.newArrayList(testProduct));
 
         // then
-        mockMvc.perform(get("/products"))
+        mockMvc.perform(get("/api/v1/products"))
                 .andExpect(content().string("[{\"id\":\"1\",\"name\":\"Test Product\",\"currentPrice\":{\"value\":1.23,\"currencyCode\":\"USD\"}}]"))
                 .andExpect(status().isOk());
     }
@@ -68,7 +68,7 @@ public class ProductControllerTest {
         when(service.getProductById(PRODUCT_ID)).thenReturn(testProduct);
 
         // then
-        mockMvc.perform(get(String.format("/products/%s", PRODUCT_ID)))
+        mockMvc.perform(get(String.format("/api/v1/products/%s", PRODUCT_ID)))
                 .andExpect(content().string("{\"id\":\"1\",\"name\":\"Test Product\",\"currentPrice\":{\"value\":1.23,\"currencyCode\":\"USD\"}}"))
                 .andExpect(status().isOk());
     }
@@ -79,7 +79,7 @@ public class ProductControllerTest {
         when(service.getProductById(PRODUCT_ID)).thenThrow(new EntityNotFoundException());
 
         // then
-        mockMvc.perform(get(String.format("/products/%s", PRODUCT_ID))).andExpect(status().is(404));
+        mockMvc.perform(get(String.format("/api/v1/products/%s", PRODUCT_ID))).andExpect(status().is(404));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ProductControllerTest {
         when(service.saveProductCommand(any())).thenReturn(unsavedCommand);
 
         // then
-        mockMvc.perform(put(String.format("/products/%s", PRODUCT_ID))
+        mockMvc.perform(put(String.format("/api/v1/products/%s", PRODUCT_ID))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":\"1\",\"name\":\"Test Product\",\"currentPrice\":{\"value\":1.23,\"currencyCode\":\"USD\"}}"))
 //                .andExpect(redirectedUrl(String.format("/products/%s", unsavedCommand.getId()))) // is null?
@@ -102,7 +102,7 @@ public class ProductControllerTest {
         when(service.getPriceFromDb(any())).thenReturn(CompletableFuture.completedFuture(1.23));
 
         // then
-        mockMvc.perform(get(String.format("/products/%s/name", PRODUCT_ID)))
+        mockMvc.perform(get(String.format("/api/v1/products/%s/name", PRODUCT_ID)))
                 .andExpect(content().string("{\"price\":1.23,\"name\":\"Test Name\",\"id\":\"1\"}"))
                 .andExpect(status().isOk());
     }
@@ -112,7 +112,7 @@ public class ProductControllerTest {
         when(service.copyProductDetailsForId(any())).thenReturn(CompletableFuture.completedFuture(true));
 
         // then
-        mockMvc.perform(get(String.format("/products/%s/copy", PRODUCT_ID)))
+        mockMvc.perform(get(String.format("/api/v1/products/%s/copy", PRODUCT_ID)))
                 .andExpect(content().string("Data Copied Successfully"))
                 .andExpect(status().isOk());
     }
@@ -122,7 +122,7 @@ public class ProductControllerTest {
         when(service.copyProductDetailsForId(any())).thenReturn(CompletableFuture.completedFuture(false));
 
         // then
-        mockMvc.perform(get(String.format("/products/%s/copy", PRODUCT_ID)))
+        mockMvc.perform(get(String.format("/api/v1/products/%s/copy", PRODUCT_ID)))
 //                .andExpect(content().string("Unable to retrieve data for id: 1"))
                 .andExpect(status().is(404));
     }

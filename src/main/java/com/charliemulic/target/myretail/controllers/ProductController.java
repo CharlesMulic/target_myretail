@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
+@RequestMapping("/api/v1")
 public class ProductController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);

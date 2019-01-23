@@ -2,12 +2,12 @@
 
 <h3>Endpoints</h3>
 
-- GET /products
+- GET /api/v1/products
 
 <p>Returns a list of all products in the database</p>
 
 ```json
-Example Request: GET http://localhost:8080/products
+Example Request: GET http://localhost:8080/api/v1/products
 [
   {
     "id": "13860424",
@@ -28,12 +28,12 @@ Example Request: GET http://localhost:8080/products
 ]
 ```
 
-- GET /products/{id}
+- GET /api/v1/products/{id}
 
 <p>Provides information for a specific product with the provided id</p>
 
 ```json
-Example Request: GET http://localhost:8080/products/13860428/
+Example Request: GET http://localhost:8080/api/v1/products/13860428/
 {
   "id":13860428,
   "name":"The Big Lebowski (Blu-ray) (Widescreen)",
@@ -44,12 +44,12 @@ Example Request: GET http://localhost:8080/products/13860428/
 }
 ```
 
-- PUT /products/{id}
+- PUT /api/v1/products/{id}
 
 <p>Attempts to update the product with the provided id with the JSON data in the request body. If valid, you should be redirected to GET products/{id}, if invalid, you should receive a response describing the problem.</p>
 
 ```json
-Example Request: PUT http://localhost:8080/products/13860428/
+Example Request: PUT http://localhost:8080/api/v1/products/13860428/
 Body:
 {
   "id":13860428,
@@ -61,12 +61,12 @@ Body:
 }
 ```
 
-- GET /products/{id}/name
+- GET /api/v1/products/{id}/name
 
 This endpoint uses a rest client to hit a third party API that will provide the name of the product with this id. Additionally, it will asynchronously fetch pricing information from a local database, and return the aggregated results as JSON.
 
 ```json
-Example Request: GET http://localhost:8080/products/13860428/name
+Example Request: GET http://localhost:8080/api/v1/products/13860428/name
 {
 "price": 10.5,
 "name": "The Big Lebowski (Blu-ray)",
@@ -74,11 +74,11 @@ Example Request: GET http://localhost:8080/products/13860428/name
 }
 ```
 
-- GET /products/{id}/copy
+- GET /api/v1/products/{id}/copy
 
 This endpoint fetches the product with the given id from a third party and copies it to the local application database. This is a utility endpoint intended to populate demo data.
 
 ```json
-Example Request: GET http://localhost:8080/products/13860424/copy
+Example Request: GET http://localhost:8080/api/v1/products/13860424/copy
 Example Response: Data Copied Successfully
 ```
