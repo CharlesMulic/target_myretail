@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class ProductController {
     /**
      * Get a product with a given id.
      * Satisfies the requirements:
-     * - Responds to an HTTP GET request at /products/{id} and delivers product data as JSON (where {id} will be a number.
+     * - Responds to an HTTP GET request at /api/v1/products/{id} and delivers product data as JSON (where {id} will be a number.
      * - Example product IDs: 15117729, 16483589, 16696652, 16752456, 15643793)
      * - Example response: {"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value": 13.49,"currency_code":"USD"}}
      * @param id - the id of the product to be retrieved
@@ -51,21 +52,21 @@ public class ProductController {
     /**
      * Attempts to update the product with the given id with the JSON in the post body.
      * Satisfies requirements:
-     * - BONUS: Accepts an HTTP PUT request at the same path (/products/{id}),
+     * - BONUS: Accepts an HTTP PUT request at the same path (/api/v1/products/{id}),
      *   containing a JSON request body similar to the GET response, and updates the product’s price in the data store.
      * @param id - The id of the product to update
      * @param product - The command object that the request body data will be bound to
      * @return - a redirection to GET /products/{id}
      */
     @PutMapping("/products/{id}")
-    public String updateProductById(@PathVariable String id, @Valid @RequestBody ProductCommand product, BindingResult bindingResult) {
+    public ModelAndView updateProductById(@PathVariable String id, @Valid @RequestBody ProductCommand product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationErrorsException(bindingResult);
         }
         log.info(String.format("Updating product with id: %s", id));
         product.setId(id);
         ProductCommand savedProduct = productService.saveProductCommand(product);
-        return "redirect:/products/" + savedProduct.getId();
+        return new ModelAndView("redirect:/api/v1/products/" + savedProduct.getId());
     }
 
     /**
