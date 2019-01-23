@@ -13,7 +13,7 @@ public interface ProductService {
 
     ProductCommand saveProductCommand(ProductCommand product);
 
-    CompletableFuture<Void> copyProductDetailsForId(String id);
+    CompletableFuture<Boolean> copyProductDetailsForId(String id);
 
     CompletableFuture<String> getProductName(String id);
 

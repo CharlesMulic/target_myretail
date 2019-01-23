@@ -35,6 +35,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ValidationErrorsException.class)
     protected ResponseEntity<Object> handleEntityNotFound(ValidationErrorsException ex) {
         BindingResult bindingResult = ex.getBindingResult();
+        log.info(String.format("Processing validation errors for %s", bindingResult.getTarget().getClass().getSimpleName()));
 
         List<String> errors = bindingResult.getFieldErrors().stream().map(error -> {
             return String.format("Field [%s] %s", error.getField(), error.getDefaultMessage());

@@ -1,12 +1,10 @@
 package com.charliemulic.target.myretail.model.tcin;
 
-import java.io.Serializable;
-
 /*
  Domain class for mapping some of the JSON data returned from the endpoint:
  http://redsky.target.com/v2/pdp/tcin/{id}
  */
-public class Tcin implements Serializable {
+public class Tcin {
 
     private Product product;
 

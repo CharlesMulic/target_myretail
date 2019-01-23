@@ -1,11 +1,9 @@
 package com.charliemulic.target.myretail.controllers;
 
 import com.charliemulic.target.myretail.commands.ProductCommand;
-import com.charliemulic.target.myretail.commands.ProductPriceCommand;
 import com.charliemulic.target.myretail.errors.EntityNotFoundException;
 import com.charliemulic.target.myretail.errors.ValidationErrorsException;
 import com.charliemulic.target.myretail.model.Product;
-import com.charliemulic.target.myretail.model.tcin.Tcin;
 import com.charliemulic.target.myretail.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +17,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 // TODO tests
-// TODO logging
 // TODO how would this scale?
+// TODO put on non existing id?
 
 @RestController
 public class ProductController {
@@ -39,7 +37,8 @@ public class ProductController {
     }
 
     /**
-     * Get a product with a given id. Satisfies the requirements:
+     * Get a product with a given id.
+     * Satisfies the requirements:
      * - Responds to an HTTP GET request at /products/{id} and delivers product data as JSON (where {id} will be a number.
      * - Example product IDs: 15117729, 16483589, 16696652, 16752456, 15643793)
      * - Example response: {"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value": 13.49,"currency_code":"USD"}}
@@ -73,12 +72,14 @@ public class ProductController {
     }
 
     /**
-     * Performs an HTTP GET to retrieve the product name from an external API. (For this exercise the data will come from redsky.target.com, but let’s just pretend this is an internal resource hosted by myRetail)  
-     * Example: http://redsky.target.com/v2/pdp/tcin/13860428?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics
-     * TODO Reads pricing information from a NoSQL data store and combines it with the product id and name from the HTTP request into a single response.  
+     * Fetches the product name and price from different sources and aggregates the results.
+     * Satisfies requirements:
+     * - Performs an HTTP GET to retrieve the product name from an external API. (For this exercise the data will come from redsky.target.com, but let’s just pretend this is an internal resource hosted by myRetail)  
+     * - Example: http://redsky.target.com/v2/pdp/tcin/13860428?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics
+     * - Reads pricing information from a NoSQL data store and combines it with the product id and name from the HTTP request into a single response.  
      */
     @GetMapping("/products/{id}/name")
-    public Map<String, Object> getProductName(@PathVariable String id) throws Exception {
+    public Map<String, Object> getProductNameAndPrice(@PathVariable String id) throws Exception {
         log.info(String.format("Fetching product and pricing details for product id: %s", id));
         CompletableFuture<String> nameFuture = productService.getProductName(id);
         CompletableFuture<Double> priceFuture = productService.getPriceFromDb(id);
@@ -100,7 +101,9 @@ public class ProductController {
      */
     @GetMapping("/products/{id}/copy")
     public String copyProductDataToLocalDb(@PathVariable String id) {
-        productService.copyProductDetailsForId(id).join();
+        if (!productService.copyProductDetailsForId(id).join()) {
+            throw new EntityNotFoundException(String.format("Unable to retrieve data for id: %s", id));
+        }
         return "Data Copied Successfully";
     }
 

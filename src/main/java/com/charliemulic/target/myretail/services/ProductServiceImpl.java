@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Async
     @Override
-    public CompletableFuture<Void> copyProductDetailsForId(String id) {
+    public CompletableFuture<Boolean> copyProductDetailsForId(String id) {
         log.info(String.format("Attempting to copy product information from third party with id: %s to local application...", id));
 
         Tcin details;
@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
             log.info(String.format("Fetching product %s details from: %s", id, TCIN_ENDPOINT));
             details = restTemplate.getForObject(String.format("%s/%s?%s", TCIN_ENDPOINT, id, TCIN_PARAMS), Tcin.class);
         } catch (HttpClientErrorException e) {
-            return CompletableFuture.completedFuture(null);
+            return CompletableFuture.completedFuture(false);
         }
         ProductCommand product = new ProductCommand();
         product.setId(details.getProduct().getItem().getTcin());
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
 
         saveProductCommand(product);
         log.info(String.format("Successfully copied external data for product id: %s", id));
-        return CompletableFuture.completedFuture(null);
+        return CompletableFuture.completedFuture(true);
     }
 
     /**
